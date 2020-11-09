@@ -3,14 +3,25 @@ Vagrant-Docker
 
 Vagrant box with Docker using Ubuntu (bento/ubuntu-20.04).
 
+The box container a Nginx Docker container already ready to use 
 
-HOW-To
+
+How To
 ===================
 
 ###### Start box
 ```Shell
 vagrant up
 ```
+
+###### Access to Nginx
+```Shell
+http://localhost:8080/
+```
+
+Access to the box
+===================
+You can connect to the box and start creating your own containers, Here is an example :
 
 ###### Connect to the box
 ```Shell
@@ -21,6 +32,9 @@ vagrant ssh
 ```Shell
 sudo docker run hello-world
 ```
+
+Other useful commands
+===================
 
 ###### Display docker containers
 ```Shell
