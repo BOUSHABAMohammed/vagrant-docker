@@ -16,8 +16,12 @@ echo "SET UP REPO DONE"
 echo "INSTALL DOCKER ENGINE.."
 sudo apt-get -y update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+ 
+#create a folder 
+cd /srv
+sudo mkdir files_shared_with_docker
 
 #create a nginx docker container
 echo "creating nginx docker container"
 sudo docker pull nginx
-sudo docker run --name nginx-server -d -p 9090:80 nginx:latest
+sudo docker run --name nginx -d -p 9090:80 -v /srv/files_shared_with_docker:/usr/share/nginx/html nginx:latest
