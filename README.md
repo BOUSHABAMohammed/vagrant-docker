@@ -3,7 +3,7 @@ Vagrant-Docker
 
 Vagrant box with Docker using Ubuntu (bento/ubuntu-20.04).
 
-The box container a Nginx Docker container already ready to use 
+The box contains a Nginx Docker container already ready to use 
 
 
 How To
@@ -11,7 +11,7 @@ How To
 
 ###### Start box
 ```Shell
-vagrant up
+vagrant --installDocker up --provsion
 ```
 
 ###### Access to Nginx
