@@ -7,7 +7,7 @@ services:
     environment:
       - TARGET_ENV=development
     volumes:
-      - "/tmp/files_shared_with_docker:/usr/share/nginx/html"
+      - "/home/files_shared_with_docker:/usr/share/nginx/html"
 
 # volumes:
 #   nginx:
