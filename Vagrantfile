@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./shared-files", "/tmp/files_shared_with_docker",
     id: "files_shared_with_docker"
   config.vm.synced_folder "./dockerLearn", "/home/dockerLearn",
-    id: "files_shared_with_docker"
+    id: "dockerLearn"
     
 
 
