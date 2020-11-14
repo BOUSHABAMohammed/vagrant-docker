@@ -4,6 +4,8 @@
 #get bash params
 installDocker=false
 startNginxDockerContainer=false
+setupNginxUsingDockerCompose=false
+stopNginxUsingDockerCompose=false
 for var in "$@"
 do
     if [ "$var" = "--installDocker" ];then
@@ -11,6 +13,12 @@ do
     fi
     if [ "$var" = "--startNginxDockerContainer" ];then
         startNginxDockerContainer=true
+    fi
+    if [ "$var" = "--setupNginxUsingDockerCompose" ];then
+        setupNginxUsingDockerCompose=true
+    fi
+    if [ "$var" = "--stopNginxUsingDockerCompose" ];then
+        stopNginxUsingDockerCompose=true
     fi
 done
 
@@ -67,4 +75,19 @@ if [ "$startNginxDockerContainer" = true ]; then
         echo "runing nginx container.."
         sudo docker run --name nginxServer -d -p 9090:80 -v $SHARED_FILES:/usr/share/nginx/html nginx:latest
     fi
+fi
+
+##################################################################
+#       nginx Docker container setup using docker-compose        #
+##################################################################
+#run
+if [ "$setupNginxUsingDockerCompose" = true ]; then
+    DOCKER_COMPOSE_FILE_PATH=/home/dockerLearn/my-docker-compose.yml
+    sudo docker-compose -f $DOCKER_COMPOSE_FILE_PATH up -d
+fi
+
+#stop
+if [ "$stopNginxUsingDockerCompose" = true ]; then
+    DOCKER_COMPOSE_FILE_PATH=/home/dockerLearn/my-docker-compose.yml
+    sudo docker-compose -f $DOCKER_COMPOSE_FILE_PATH down
 fi

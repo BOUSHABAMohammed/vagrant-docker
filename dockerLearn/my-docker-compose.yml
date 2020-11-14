@@ -1,0 +1,13 @@
+version: "3"
+services:
+  myNginxServer:
+    image: nginx:latest
+    ports:
+      - 9090:80
+    environment:
+      - TARGET_ENV=development
+    volumes:
+      - "/tmp/files_shared_with_docker:/usr/share/nginx/html"
+
+# volumes:
+#   nginx:

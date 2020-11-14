@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 9090, host: 8080, host_ip: "127.0.0.1"
 
 
-  config.vm.synced_folder "./shared-files", "/tmp/files_shared_with_docker",
+  config.vm.synced_folder "./shared-files", "/home/files_shared_with_docker",
     id: "files_shared_with_docker"
   config.vm.synced_folder "./dockerLearn", "/home/dockerLearn",
     id: "dockerLearn"
