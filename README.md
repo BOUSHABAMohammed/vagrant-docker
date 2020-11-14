@@ -11,7 +11,7 @@ How To
 
 ###### Start box
 ```Shell
-vagrant --installDocker up --provsion
+vagrant --installDocker --startNginxDockerContainer up --provsion
 ```
 
 ###### Access to Nginx
