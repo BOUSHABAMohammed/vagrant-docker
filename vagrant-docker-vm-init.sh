@@ -3,10 +3,14 @@
 #################################
 #get bash params
 installDocker=false
+startNginxDockerContainer=false
 for var in "$@"
 do
     if [ "$var" = "--installDocker" ];then
         installDocker=true
+    fi
+    if [ "$var" = "--startNginxDockerContainer" ];then
+        startNginxDockerContainer=true
     fi
 done
 
@@ -28,6 +32,12 @@ if [ "$installDocker" = true ]; then
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs) exist stable"
     sudo apt-get -y update
     sudo apt-get -y install docker-ce docker-ce-cli containerd.io
+    echo "docker is installed, its version is $(sudo docker --version)"
+    #install docker compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    echo "docker-compose installed, its version is $(sudo docker-compose --version)"
+
 fi
 
 #create a folder 
@@ -40,19 +50,21 @@ fi
 #################################
 #  nginx Docker container setup #
 #################################
-if [ "$(sudo docker image ls | grep nginx)" ]; then
-	echo "nginx image already exists"
-else
-    echo "downloading nginx image"
-	sudo docker pull nginx
-fi
-#run nginx container
-if [ "$(sudo docker ps -a | grep nginxServer)" ]; then
-	echo "nginx container is present, no need to create it again"
-    if [ "$(sudo docker ps -a | grep nginxServer | grep Exited)" ]; then
-        sudo docker start nginxServer
+if [ "$startNginxDockerContainer" = true ]; then
+    if [ "$(sudo docker image ls | grep nginx)" ]; then
+        echo "nginx image already exists"
+    else
+        echo "downloading nginx image"
+        sudo docker pull nginx
     fi
-else
-    echo "runing nginx container.."
-    sudo docker run --name nginxServer -d -p 9090:80 -v $SHARED_FILES:/usr/share/nginx/html nginx:latest
+    #run nginx container
+    if [ "$(sudo docker ps -a | grep nginxServer)" ]; then
+        echo "nginx container is present, no need to create it again"
+        if [ "$(sudo docker ps -a | grep nginxServer | grep Exited)" ]; then
+            sudo docker start nginxServer
+        fi
+    else
+        echo "runing nginx container.."
+        sudo docker run --name nginxServer -d -p 9090:80 -v $SHARED_FILES:/usr/share/nginx/html nginx:latest
+    fi
 fi
