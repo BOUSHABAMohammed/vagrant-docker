@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     vb.gui = false
   
     # Customize the amount of memory on the VM:
-    vb.memory = "1024"
+    vb.memory = "3024"
     vb.cpus = 2
     vb.name = 'ubuntu20-docker-practice'
   end

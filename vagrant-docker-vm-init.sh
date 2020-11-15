@@ -6,6 +6,7 @@ installDocker=false
 startNginxDockerContainer=false
 setupNginxUsingDockerCompose=false
 stopNginxUsingDockerCompose=false
+installMinikube=false
 for var in "$@"
 do
     if [ "$var" = "--installDocker" ];then
@@ -19,6 +20,9 @@ do
     fi
     if [ "$var" = "--stopNginxUsingDockerCompose" ];then
         stopNginxUsingDockerCompose=true
+    fi
+    if [ "$var" = "--installMinikube" ];then
+        installMinikube=true
     fi
 done
 
@@ -91,3 +95,26 @@ if [ "$stopNginxUsingDockerCompose" = true ]; then
     DOCKER_COMPOSE_FILE_PATH=/home/dockerLearn/my-docker-compose.yml
     sudo docker-compose -f $DOCKER_COMPOSE_FILE_PATH down
 fi
+
+#################################
+#      Minikube installation    #
+#################################
+if [ "$installMinikube" = true ]; then
+    #install minkube
+    sudo curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+    sudo dpkg -i minikube_latest_amd64.deb
+
+    #install kubectl
+    sudo curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \ 
+    sudo chmod +x kubectl
+    sudo mv ./kubectl /usr/local/bin/kubectl
+
+    #install conntrack needed to start minkube with driver=none 
+    sudo apt -y install conntrack
+fi
+
+#add current user to docker's user group
+#sudo usermod -aG docker $USER && newgrp docker
+
+#start minikube 
+#minikube start --driver=docker
