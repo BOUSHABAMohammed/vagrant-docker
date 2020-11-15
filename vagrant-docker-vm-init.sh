@@ -7,6 +7,7 @@ startNginxDockerContainer=false
 setupNginxUsingDockerCompose=false
 stopNginxUsingDockerCompose=false
 installMinikube=false
+setupMongoEnv=false
 for var in "$@"
 do
     if [ "$var" = "--installDocker" ];then
@@ -23,6 +24,9 @@ do
     fi
     if [ "$var" = "--installMinikube" ];then
         installMinikube=true
+    fi
+    if [ "$var" = "--setupMongoEnv" ];then
+        setupMongoEnv=true
     fi
 done
 
@@ -113,8 +117,34 @@ if [ "$installMinikube" = true ]; then
     sudo apt -y install conntrack
 fi
 
-#add current user to docker's user group
+#Add vagrant user to docker group
 #sudo usermod -aG docker $USER && newgrp docker
 
 #start minikube 
 #minikube start --driver=docker
+
+##################################################################
+#      mongodb & mongodb-express setup using k8s installation    #
+##################################################################
+if [ "$setupMongoEnv" = true ]; then
+    #start minikube 
+    minikube start --driver=docker
+
+    cd /home/dockerLearn/kubernates
+
+    #create secrete
+    kubectl apply -f mongodb-secret.yaml 
+
+    #create config map
+    kubectl apply -f mongo-configmap.yaml
+
+    #create mongo deployment & its internal service
+    kubectl apply -f mongo-deployment.yaml
+
+    #create mongo-express deployment & its external serice
+    kubectl apply -f mongo-express-deployment.yaml
+
+    #start the external service
+    minikube service mongo-express-service
+
+fi

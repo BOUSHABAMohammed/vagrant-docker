@@ -6,6 +6,10 @@ Vagrant.configure("2") do |config|
 
   config.vm.network "forwarded_port", guest: 9090, host: 8080, host_ip: "127.0.0.1"
 
+  #networking for k8s
+  config.vm.network "private_network", ip: "192.168.50.5"
+  config.vm.network "forwarded_port", guest: 30001, host: 30001
+
 
   config.vm.synced_folder "./shared-files", "/home/files_shared_with_docker",
     id: "files_shared_with_docker"
